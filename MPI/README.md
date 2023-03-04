@@ -90,3 +90,4 @@ mpirun -np 5 ./sum.bin
 
 - [Using MPI with C](https://curc.readthedocs.io/en/latest/programming/MPI-C.html)
 - [Running Open MPI through a job script](https://usc-rc.github.io/tutorials/open-mpi)
+- [MPI programs](https://people.math.sc.edu/Burkardt/c_src/mpi/mpi.html)
