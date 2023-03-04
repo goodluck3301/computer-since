@@ -85,3 +85,8 @@ mpicc -o sum.bin ./sum.c
 
 mpirun -np 5 ./sum.bin
 ```
+
+### Useful Sites
+
+- [Using MPI with C](https://curc.readthedocs.io/en/latest/programming/MPI-C.html)
+- [Running Open MPI through a job script](https://usc-rc.github.io/tutorials/open-mpi)
