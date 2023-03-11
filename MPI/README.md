@@ -81,9 +81,9 @@ sudo make install
 ## Run MPI Code
 
 ```bash
-mpicc -o sum.bin ./sum.c
+mpicc -o file_name.bin ./file_name.c
 
-mpirun -np 5 ./sum.bin
+mpirun -np 5 ./file_name.bin
 ```
 
 ### Useful Sites
