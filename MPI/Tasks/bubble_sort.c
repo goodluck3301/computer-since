@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     int rank, size;
     int *data, *local_data, *sorted_data;
     int local_size, i;
+    double start_time, end_time, local_elapsed, elapsed;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -39,16 +40,31 @@ int main(int argc, char **argv) {
 
     MPI_Scatter(data, local_size, MPI_INT, local_data, local_size, MPI_INT, 0, MPI_COMM_WORLD);
 
+    start_time = MPI_Wtime();
+
     bubble_sort(local_data, local_size);
+
+    end_time = MPI_Wtime();
+
+    local_elapsed = end_time - start_time;
 
     MPI_Gather(local_data, local_size, MPI_INT, sorted_data, local_size, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
+        start_time = MPI_Wtime();
+
         bubble_sort(sorted_data, 50000);
+
+        end_time = MPI_Wtime();
+
+        elapsed = end_time - start_time;
+
         for (i = 0; i < 50000; i++) {
             printf("%d ", sorted_data[i]);
         }
         printf("\n");
+
+        printf("Total time: %f seconds\n", elapsed);
         free(data);
     }
 
