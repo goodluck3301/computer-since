@@ -1,49 +1,59 @@
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <mpi.h>
 
-#define MAX_STRING_LENGTH 4
-
+#define CHARACTERS "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 int count = 0;
 
-char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-int charset_length = sizeof(charset) - 1;
-
-void generate_strings(char* string, int length, int depth, int rank, int size) {
-    if (depth == length) {
-        printf("Rank %d: %s\n", rank, string);
-        count = count+1;
-        return;
-    }
-    for (int i = rank; i < charset_length; i += size) {
-        string[depth] = charset[i];
-        generate_strings(string, length, depth + 1, rank, size);
-    }
-}
-
 int main(int argc, char** argv) {
-    int rank, size;
-    char string[MAX_STRING_LENGTH+1] = {0};
-    double start_time, end_time, elapsed;
-
+    double start_time, end_time, time;
     MPI_Init(&argc, &argv);
+    int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    int i, j, k, l, m, n, o, p;
+    char password[9];
+
     start_time = MPI_Wtime();
-    
-    generate_strings(string, MAX_STRING_LENGTH, 0, rank, size);
 
+    for (i = rank; i < strlen(CHARACTERS); i += size) {
+        password[0] = CHARACTERS[i];
+        for (j = 0; j < strlen(CHARACTERS); j++) {
+            password[1] = CHARACTERS[j];
+            for (k = 0; k < strlen(CHARACTERS); k++) {
+                password[2] = CHARACTERS[k];
+                for (l = 0; l < strlen(CHARACTERS); l++) {
+                    password[3] = CHARACTERS[l];
+                    for (m = 0; m < strlen(CHARACTERS); m++) {
+                        password[4] = CHARACTERS[m];
+                        for (n = 0; n < strlen(CHARACTERS); n++) {
+                            password[5] = CHARACTERS[n];
+                            for (o = 0; o < strlen(CHARACTERS); o++) {
+                                password[6] = CHARACTERS[o];
+                                for (p = 0; p < strlen(CHARACTERS); p++) {
+                                    password[7] = CHARACTERS[p];
+                                    count++;
+                                    printf("\nRank [%d] - ", rank);
+                                    printf("%s", password);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     end_time = MPI_Wtime();
-
-    elapsed = end_time - start_time;
+    time = end_time - start_time;
 
     printf("\n---------------------\n");
     printf("Count - %d \n",count);
-    printf("Total time: %f seconds\n", elapsed);
+    printf("Total time: %f seconds\n", time);
     printf("---------------------\n");
 
     MPI_Finalize();
     return 0;
 }
+
